@@ -44,16 +44,23 @@ exports.updateUserProfile = async (req, res) => {
     }
     if (req.files.resume) {
       const resumeFile = req.files.resume[0];
-      let resumeUrl = (resumeFile.secure_url || resumeFile.path).replace(/\\/g, "/");
       
-      // Ensure URL ends with proper extension for download
-      const ext = path.extname(resumeFile.originalname).toLowerCase();
-      if (!resumeUrl.endsWith(ext)) {
-        // If Cloudinary URL doesn't have extension, append it
-        resumeUrl += ext;
-      }
+      // Cloudinary returns the URL in 'path' or 'secure_url'
+      // For raw files, we need to use the URL Cloudinary provides directly
+      let resumeUrl = resumeFile.secure_url || resumeFile.path;
       
+      // Clean up the URL
+      resumeUrl = resumeUrl.replace(/\\/g, "/");
+      
+      // If URL doesn't end with .pdf, the file might not have been uploaded correctly
+      // Store it anyway for debugging
       profileFields.resume = resumeUrl;
+      
+      console.log('Resume uploaded:', {
+        originalName: resumeFile.originalname,
+        cloudinaryUrl: resumeUrl,
+        publicId: resumeFile.filename
+      });
     }
   }
 
