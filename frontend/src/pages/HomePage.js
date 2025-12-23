@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
-  Container, Typography, Box, Grid, 
+  Container, Typography, Box, Grid,
   Alert, Chip, Paper, Collapse, IconButton, Skeleton,
   Fade, Badge, Stack, alpha, Card, CardContent
 } from '@mui/material';
@@ -270,7 +270,7 @@ const HomePage = () => {
         <Container sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={4} alignItems="center">
             {/* Main Value Proposition - Left side (F-pattern) */}
-            <Grid item xs={12} md={7}>
+            <Grid size={{ xs: 12, md: 7 }}>
               <Fade in timeout={800}>
                 <Box>
                   {/* Trust Badge */}

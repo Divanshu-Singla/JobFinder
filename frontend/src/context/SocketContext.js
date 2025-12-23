@@ -57,12 +57,13 @@ export const SocketProvider = ({ children }) => {
     } else {
       // Clean up socket if no token
       if (socket) {
+        console.log('Cleaning up socket (no token)');
         socket.close();
         setSocket(null);
         setConnected(false);
       }
     }
-  }, [user, admin, socket]);
+  }, [user, admin]); // Removed 'socket' from dependencies to prevent infinite loop
 
   // Add notification to state
   const addNotification = useCallback((notification) => {

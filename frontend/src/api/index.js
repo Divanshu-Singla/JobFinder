@@ -80,6 +80,7 @@ export const updateUserProfile = (formData) => API.put('/users/profile', formDat
   headers: {
     'Content-Type': 'multipart/form-data',
   },
+  timeout: 120000, // 2 minutes for file uploads (Cloudinary processing + cold start)
 });
 // Add these to the end of src/api/index.js
 

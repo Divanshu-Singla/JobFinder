@@ -106,7 +106,13 @@ const AdminUsersPage = () => {
                     <TableCell>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Avatar
-                          src={user.profilePhoto ? `http://localhost:5000/${user.profilePhoto}` : undefined}
+                          src={
+                            user.profilePhoto
+                              ? user.profilePhoto.startsWith('http')
+                                ? user.profilePhoto
+                                : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.profilePhoto}`
+                              : undefined
+                          }
                           sx={{ width: 40, height: 40 }}
                         >
                           {user.name?.charAt(0)}
@@ -125,8 +131,13 @@ const AdminUsersPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          href={`http://localhost:5000/${user.resume}`}
+                          href={
+                            user.resume.startsWith('http')
+                              ? user.resume
+                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.resume}`
+                          }
                           target="_blank"
+                          rel="noopener noreferrer"
                           sx={{
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

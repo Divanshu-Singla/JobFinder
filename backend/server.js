@@ -74,8 +74,14 @@ app.use(xss());
 app.use(express.json({ limit: constants.JSON_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: constants.JSON_BODY_LIMIT }));
 
-// Note: Files are now stored on Cloudinary, not local filesystem
-// No need to serve static files from /uploads
+// Serve static files for backward compatibility with old uploads (pre-Cloudinary)
+// New uploads go to Cloudinary, but old files may still exist locally
+// Add CORS headers to allow cross-origin access to uploaded files
+app.use('/uploads', (req, res, next) => {
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+}, express.static(path.join(__dirname, 'uploads')));
 
 // Root endpoint - API information
 app.get('/', (req, res) => {

@@ -39,10 +39,12 @@ const AdminApplicantsPage = () => {
       const { data } = await API.get(`/admin/jobs/${jobId}/applicants`);
       setJob(data.job);
       // Ensure all applicants have a status field
-      setApplicants(data.applicants.map(app => ({
+      const mappedApplicants = data.applicants.map(app => ({
         ...app,
         status: app.status || 'Pending'
-      })));
+      }));
+      console.log('Applicants data:', mappedApplicants);
+      setApplicants(mappedApplicants);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching applicants:', error);
@@ -114,7 +116,7 @@ const AdminApplicantsPage = () => {
                     <TableCell>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Avatar
-                          src={applicant.profilePhoto ? `http://localhost:5000/${applicant.profilePhoto}` : undefined}
+                          src={applicant.profilePhoto || undefined}
                           sx={{ width: 40, height: 40 }}
                         >
                           {applicant.name?.charAt(0)}
@@ -133,8 +135,13 @@ const AdminApplicantsPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          href={`http://localhost:5000/${applicant.resume}`}
+                          href={
+                            applicant.resume.startsWith('http') 
+                              ? applicant.resume 
+                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${applicant.resume}`
+                          }
                           target="_blank"
+                          rel="noopener noreferrer"
                           sx={{ 
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
