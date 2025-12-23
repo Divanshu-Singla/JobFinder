@@ -32,6 +32,9 @@ const storage = new CloudinaryStorage({
     if (isResume) {
       folder += 'resumes';
       resourceType = 'raw'; // For PDF, DOC files
+      // Get original file extension
+      const ext = path.extname(file.originalname).toLowerCase().substring(1);
+      format = ext; // Force extension in URL (pdf, doc, docx)
     } else if (isProfilePhoto) {
       folder += 'profiles';
       resourceType = 'image';
@@ -41,7 +44,7 @@ const storage = new CloudinaryStorage({
     return {
       folder: folder,
       resource_type: resourceType,
-      format: isResume ? undefined : format, // Don't set format for PDFs, let Cloudinary preserve it
+      format: format, // Include format for both resumes and photos
       allowed_formats: isResume ? ['pdf', 'doc', 'docx'] : ['jpg', 'jpeg', 'png'],
       public_id: `${file.fieldname}-${Date.now()}`,
       transformation: isProfilePhoto ? [

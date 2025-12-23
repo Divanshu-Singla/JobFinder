@@ -3,6 +3,7 @@
 const User = require('../models/User');
 const Job = require('../models/Job');
 const { notifyAllAdmins } = require('../config/socket');
+const path = require('path');
 
 // === User Profile Management ===
 
@@ -42,10 +43,17 @@ exports.updateUserProfile = async (req, res) => {
       profileFields.profilePhoto = req.files.profilePhoto[0].path.replace(/\\/g, "/");
     }
     if (req.files.resume) {
-      // Use the secure_url from Cloudinary which includes proper extension and access
       const resumeFile = req.files.resume[0];
-      // Cloudinary returns secure_url for raw files with proper extension
-      profileFields.resume = (resumeFile.secure_url || resumeFile.path).replace(/\\/g, "/");
+      let resumeUrl = (resumeFile.secure_url || resumeFile.path).replace(/\\/g, "/");
+      
+      // Ensure URL ends with proper extension for download
+      const ext = path.extname(resumeFile.originalname).toLowerCase();
+      if (!resumeUrl.endsWith(ext)) {
+        // If Cloudinary URL doesn't have extension, append it
+        resumeUrl += ext;
+      }
+      
+      profileFields.resume = resumeUrl;
     }
   }
 
