@@ -28,13 +28,14 @@ const storage = new CloudinaryStorage({
     let folder = 'job-portal/';
     let resourceType = 'auto';
     let format = undefined;
+    let publicId = `${file.fieldname}-${Date.now()}`;
     
     if (isResume) {
       folder += 'resumes';
       resourceType = 'raw'; // For PDF, DOC files
-      // Get original file extension
+      // For raw files, include extension in public_id
       const ext = path.extname(file.originalname).toLowerCase().substring(1);
-      format = ext; // Force extension in URL (pdf, doc, docx)
+      publicId = `${file.fieldname}-${Date.now()}.${ext}`;
     } else if (isProfilePhoto) {
       folder += 'profiles';
       resourceType = 'image';
@@ -44,9 +45,9 @@ const storage = new CloudinaryStorage({
     return {
       folder: folder,
       resource_type: resourceType,
-      format: format, // Include format for both resumes and photos
+      format: format,
       allowed_formats: isResume ? ['pdf', 'doc', 'docx'] : ['jpg', 'jpeg', 'png'],
-      public_id: `${file.fieldname}-${Date.now()}`,
+      public_id: publicId,
       transformation: isProfilePhoto ? [
         { width: 800, height: 800, crop: 'limit' },
         { quality: 'auto:good' }
