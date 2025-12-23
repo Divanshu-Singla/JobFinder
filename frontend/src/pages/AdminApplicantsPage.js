@@ -135,13 +135,12 @@ const AdminApplicantsPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          href={
-                            applicant.resume.startsWith('http') 
+                          onClick={() => {
+                            const resumeUrl = applicant.resume.startsWith('http') 
                               ? applicant.resume 
-                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${applicant.resume}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
+                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${applicant.resume}`;
+                            window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+                          }}
                           sx={{ 
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

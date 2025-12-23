@@ -131,13 +131,12 @@ const AdminUsersPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          href={
-                            user.resume.startsWith('http')
+                          onClick={() => {
+                            const resumeUrl = user.resume.startsWith('http')
                               ? user.resume
-                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.resume}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
+                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.resume}`;
+                            window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+                          }}
                           sx={{
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
