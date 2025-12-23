@@ -74,21 +74,8 @@ app.use(xss());
 app.use(express.json({ limit: constants.JSON_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: constants.JSON_BODY_LIMIT }));
 
-// Serve static files for backward compatibility with old uploads (pre-Cloudinary)
-// New uploads go to Cloudinary, but old files may still exist locally
-// Add CORS headers to allow cross-origin access to uploaded files
-app.use('/uploads', (req, res, next) => {
-  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
-  res.header('Access-Control-Allow-Origin', '*');
-  
-  // Set proper Content-Type for PDFs to display in browser
-  if (req.path.endsWith('.pdf')) {
-    res.header('Content-Type', 'application/pdf');
-    res.header('Content-Disposition', 'inline'); // Force display instead of download
-  }
-  
-  next();
-}, express.static(path.join(__dirname, 'uploads')));
+// All file uploads now go to Cloudinary cloud storage (no local storage needed)
+// Cloudinary provides permanent, scalable storage with automatic backups
 
 // Root endpoint - API information
 app.get('/', (req, res) => {
