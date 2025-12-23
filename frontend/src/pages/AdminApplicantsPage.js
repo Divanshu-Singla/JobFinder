@@ -135,10 +135,10 @@ const AdminApplicantsPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          onClick={() => {
-                            // Direct Cloudinary URL for testing
-                            window.open(applicant.resume, '_blank', 'noopener,noreferrer');
-                          }}
+                          component="a"
+                          href={applicant.resume}
+                          download
+                          target="_blank"
                           sx={{ 
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

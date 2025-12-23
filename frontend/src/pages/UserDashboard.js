@@ -489,14 +489,12 @@ const UserDashboard = () => {
                       Current Resume
                     </Typography>
                     <Link 
-                      component="button"
-                      onClick={() => {
-                        // Direct Cloudinary URL for testing
-                        window.open(user.resume, '_blank', 'noopener,noreferrer');
-                      }}
+                      href={user.resume}
+                      download
+                      target="_blank"
                       sx={{ fontSize: '0.8125rem', color: '#667eea', cursor: 'pointer', textAlign: 'left' }}
                     >
-                      View Document →
+                      Download Resume →
                     </Link>
                   </Box>
                 </Box>
