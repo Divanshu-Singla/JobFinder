@@ -1,165 +1,292 @@
 // src/pages/NewsPage.js
 
-import React, { useState, useEffect } from "react";
-import { FaNewspaper, FaSpinner, FaExternalLinkAlt, FaCalendarAlt } from "react-icons/fa";
-import API from "../api";
+import React, { useState, useEffect } from 'react';
+import {
+  Container,
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions,
+  Button,
+  Chip,
+  CircularProgress,
+  Alert,
+} from '@mui/material';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import API from '../api';
 
-function NewsPage() {
-    const [news, setNews] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
-    const [category, setCategory] = useState("technology");
+const NewsPage = () => {
+  const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [category, setCategory] = useState('technology');
 
-    useEffect(() => {
-        fetchNews();
-    }, [category]);
+  useEffect(() => {
+    fetchNews();
+  }, [category]);
 
-    const fetchNews = async () => {
-        setLoading(true);
-        setError("");
-        try {
-            const response = await API.get(`/news/${category}`);
-            setNews(response.data.articles || []);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching news:", error);
-            setError("Failed to load news. Please try again later.");
-            setLoading(false);
-        }
-    };
+  const fetchNews = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await API.get(`/news/${category}`);
+      setNews(response.data.articles || []);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      setError('Failed to load news. Please try again later.');
+      setLoading(false);
+    }
+  };
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric"
-        });
-    };
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
 
-    const categories = [
-        { value: "technology", label: "Technology" },
-        { value: "business", label: "Business" },
-        { value: "science", label: "Science" },
-        { value: "health", label: "Health" }
-    ];
+  const categories = [
+    { value: 'technology', label: 'Technology' },
+    { value: 'business', label: 'Business' },
+    { value: 'science', label: 'Science' },
+    { value: 'health', label: 'Health' },
+  ];
 
-    return (
-        <div className="min-h-screen bg-gray-100 py-8 px-4">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                        <FaNewspaper className="text-5xl text-blue-600" />
-                        <h1 className="text-4xl font-bold text-gray-800">Latest News</h1>
-                    </div>
-                    <p className="text-gray-600">Stay updated with the latest headlines</p>
-                </div>
+  return (
+    <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh', py: 6 }}>
+      <Container maxWidth="lg">
+        {/* Header */}
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
+            <NewspaperIcon sx={{ fontSize: 48, color: '#667eea' }} />
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Latest News
+            </Typography>
+          </Box>
+          <Typography variant="h6" color="text.secondary">
+            Stay updated with the latest headlines
+          </Typography>
+        </Box>
 
-                {/* Category Filter */}
-                <div className="flex justify-center gap-3 mb-8 flex-wrap">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat.value}
-                            onClick={() => setCategory(cat.value)}
-                            className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                                category === cat.value
-                                    ? "bg-blue-600 text-white shadow-lg"
-                                    : "bg-white text-gray-700 hover:bg-blue-100"
-                            }`}
-                        >
-                            {cat.label}
-                        </button>
-                    ))}
-                </div>
+        {/* Category Filter */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 6, flexWrap: 'wrap' }}>
+          {categories.map((cat) => (
+            <Chip
+              key={cat.value}
+              label={cat.label}
+              onClick={() => setCategory(cat.value)}
+              sx={{
+                px: 2,
+                py: 3,
+                fontSize: '1rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+                ...(category === cat.value
+                  ? {
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      color: 'white',
+                      '&:hover': {
+                        background: 'linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%)',
+                      },
+                    }
+                  : {
+                      bgcolor: 'white',
+                      color: '#667eea',
+                      border: '2px solid #667eea',
+                      '&:hover': {
+                        bgcolor: '#f0f0ff',
+                      },
+                    }),
+              }}
+            />
+          ))}
+        </Box>
 
-                {/* Loading */}
-                {loading && (
-                    <div className="flex justify-center items-center py-20">
-                        <FaSpinner className="animate-spin text-5xl text-blue-600" />
-                    </div>
-                )}
+        {/* Loading */}
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
+            <CircularProgress size={60} sx={{ color: '#667eea' }} />
+          </Box>
+        )}
 
-                {/* Error */}
-                {error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg text-center">
-                        {error}
-                    </div>
-                )}
+        {/* Error */}
+        {error && (
+          <Alert severity="error" sx={{ mb: 4 }}>
+            {error}
+          </Alert>
+        )}
 
-                {/* News Grid */}
-                {!loading && !error && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {news.map((article, index) => (
-                            <div
-                                key={index}
-                                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
-                            >
-                                {/* Image */}
-                                {article.urlToImage ? (
-                                    <img
-                                        src={article.urlToImage}
-                                        alt={article.title}
-                                        className="w-full h-48 object-cover"
-                                        onError={(e) => {
-                                            e.target.src = "https://via.placeholder.com/400x200?text=No+Image";
-                                        }}
-                                    />
-                                ) : (
-                                    <div className="w-full h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                                        <FaNewspaper className="text-6xl text-white opacity-50" />
-                                    </div>
-                                )}
+        {/* News Grid */}
+        {!loading && !error && news.length > 0 && (
+          <Grid container spacing={4}>
+            {news.map((article, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'all 0.3s',
+                    borderRadius: 2,
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 20px rgba(102, 126, 234, 0.15)',
+                    },
+                  }}
+                >
+                  {/* Image */}
+                  {article.urlToImage ? (
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        height: 180,
+                        objectFit: 'cover',
+                      }}
+                      image={article.urlToImage}
+                      alt={article.title}
+                      onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/400x180?text=No+Image';
+                      }}
+                    />
+                  ) : (
+                    <Box
+                      sx={{
+                        height: 180,
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <NewspaperIcon sx={{ fontSize: 60, color: 'rgba(255,255,255,0.5)' }} />
+                    </Box>
+                  )}
 
-                                {/* Content */}
-                                <div className="p-5 flex flex-col flex-grow">
-                                    {/* Source & Date */}
-                                    <div className="flex items-center justify-between mb-3 text-sm text-gray-500">
-                                        <span className="font-semibold text-blue-600">
-                                            {article.source.name}
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <FaCalendarAlt />
-                                            {formatDate(article.publishedAt)}
-                                        </span>
-                                    </div>
+                  <CardContent sx={{ flexGrow: 1, p: 2.5, display: 'flex', flexDirection: 'column', minHeight: 220 }}>
+                    {/* Source & Date */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          fontWeight: 600,
+                          color: '#667eea',
+                          fontSize: '0.75rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                        }}
+                      >
+                        {article.source.name}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <CalendarTodayIcon sx={{ fontSize: 12, color: 'text.secondary' }} />
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                          {formatDate(article.publishedAt)}
+                        </Typography>
+                      </Box>
+                    </Box>
 
-                                    {/* Title */}
-                                    <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2">
-                                        {article.title}
-                                    </h3>
+                    {/* Title */}
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 700,
+                        mb: 1.5,
+                        fontSize: '1rem',
+                        lineHeight: 1.4,
+                        height: '2.8em',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                      }}
+                    >
+                      {article.title}
+                    </Typography>
 
-                                    {/* Description */}
-                                    <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
-                                        {article.description || "No description available."}
-                                    </p>
+                    {/* Description */}
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        fontSize: '0.875rem',
+                        lineHeight: 1.6,
+                        height: '4.8em',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        mb: 2,
+                      }}
+                    >
+                      {article.description || 'No description available.'}
+                    </Typography>
 
-                                    {/* Read More Button */}
-                                    <a
-                                        href={article.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
-                                    >
-                                        Read More
-                                        <FaExternalLinkAlt className="text-sm" />
-                                    </a>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                    {/* Spacer to push button to bottom */}
+                    <Box sx={{ flexGrow: 1 }} />
 
-                {/* No News */}
-                {!loading && !error && news.length === 0 && (
-                    <div className="text-center py-20 text-gray-500">
-                        <FaNewspaper className="text-6xl mx-auto mb-4 opacity-30" />
-                        <p className="text-xl">No news available at the moment.</p>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
+                    {/* Read More Button */}
+                    <Button
+                      size="small"
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      endIcon={<OpenInNewIcon />}
+                      fullWidth
+                      sx={{
+                        color: '#667eea',
+                        fontWeight: 600,
+                        justifyContent: 'center',
+                        textTransform: 'none',
+                        borderTop: '1px solid #f0f0f0',
+                        borderRadius: 0,
+                        py: 1,
+                        mt: 'auto',
+                        '&:hover': {
+                          bgcolor: '#f8f8ff',
+                        },
+                      }}
+                    >
+                      Read Full Article
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+
+        {/* No News */}
+        {!loading && !error && news.length === 0 && (
+          <Box sx={{ textAlign: 'center', py: 10 }}>
+            <NewspaperIcon sx={{ fontSize: 80, color: '#ccc', mb: 2 }} />
+            <Typography variant="h5" color="text.secondary">
+              No news available at the moment.
+            </Typography>
+          </Box>
+        )}
+      </Container>
+    </Box>
+  );
+};
 
 export default NewsPage;
