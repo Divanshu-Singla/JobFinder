@@ -136,7 +136,7 @@ const NewsPage = () => {
 
         {/* News Grid */}
         {!loading && !error && news.length > 0 && (
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {news.map((article, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <Card
@@ -145,9 +145,10 @@ const NewsPage = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     transition: 'all 0.3s',
+                    borderRadius: 2,
                     '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: '0 12px 24px rgba(102, 126, 234, 0.2)',
+                      transform: 'translateY(-4px)',
+                      boxShadow: '0 8px 20px rgba(102, 126, 234, 0.15)',
                     },
                   }}
                 >
@@ -155,43 +156,48 @@ const NewsPage = () => {
                   {article.urlToImage ? (
                     <CardMedia
                       component="img"
-                      height="200"
+                      sx={{
+                        height: 180,
+                        objectFit: 'cover',
+                      }}
                       image={article.urlToImage}
                       alt={article.title}
                       onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/400x200?text=No+Image';
+                        e.target.src = 'https://via.placeholder.com/400x180?text=No+Image';
                       }}
                     />
                   ) : (
                     <Box
                       sx={{
-                        height: 200,
+                        height: 180,
                         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
-                      <NewspaperIcon sx={{ fontSize: 80, color: 'rgba(255,255,255,0.5)' }} />
+                      <NewspaperIcon sx={{ fontSize: 60, color: 'rgba(255,255,255,0.5)' }} />
                     </Box>
                   )}
 
-                  <CardContent sx={{ flexGrow: 1 }}>
+                  <CardContent sx={{ flexGrow: 1, p: 2.5, display: 'flex', flexDirection: 'column', minHeight: 220 }}>
                     {/* Source & Date */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                       <Typography
                         variant="caption"
                         sx={{
                           fontWeight: 600,
                           color: '#667eea',
-                          fontSize: '0.875rem',
+                          fontSize: '0.75rem',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
                         }}
                       >
                         {article.source.name}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <CalendarTodayIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
-                        <Typography variant="caption" color="text.secondary">
+                        <CalendarTodayIcon sx={{ fontSize: 12, color: 'text.secondary' }} />
+                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                           {formatDate(article.publishedAt)}
                         </Typography>
                       </Box>
@@ -202,7 +208,10 @@ const NewsPage = () => {
                       variant="h6"
                       sx={{
                         fontWeight: 700,
-                        mb: 2,
+                        mb: 1.5,
+                        fontSize: '1rem',
+                        lineHeight: 1.4,
+                        height: '2.8em',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
@@ -218,35 +227,48 @@ const NewsPage = () => {
                       variant="body2"
                       color="text.secondary"
                       sx={{
+                        fontSize: '0.875rem',
+                        lineHeight: 1.6,
+                        height: '4.8em',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
                         WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
+                        mb: 2,
                       }}
                     >
                       {article.description || 'No description available.'}
                     </Typography>
-                  </CardContent>
 
-                  <CardActions sx={{ px: 2, pb: 2 }}>
+                    {/* Spacer to push button to bottom */}
+                    <Box sx={{ flexGrow: 1 }} />
+
+                    {/* Read More Button */}
                     <Button
                       size="small"
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       endIcon={<OpenInNewIcon />}
+                      fullWidth
                       sx={{
                         color: '#667eea',
                         fontWeight: 600,
+                        justifyContent: 'center',
+                        textTransform: 'none',
+                        borderTop: '1px solid #f0f0f0',
+                        borderRadius: 0,
+                        py: 1,
+                        mt: 'auto',
                         '&:hover': {
-                          bgcolor: '#f0f0ff',
+                          bgcolor: '#f8f8ff',
                         },
                       }}
                     >
-                      Read More
+                      Read Full Article
                     </Button>
-                  </CardActions>
+                  </CardContent>
                 </Card>
               </Grid>
             ))}
