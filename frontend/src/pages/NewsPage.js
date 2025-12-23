@@ -121,7 +121,7 @@ const NewsPage = () => {
               <Grid item xs={12} sm={4} md={4} lg={4} key={index}>
                 <Card
                   sx={{
-                    height: '100%',
+                    height: 520,
                     display: 'flex',
                     flexDirection: 'column',
                     borderRadius: 3,
@@ -162,9 +162,9 @@ const NewsPage = () => {
                     </Box>
                   )}
 
-                  <CardContent sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flex: 1, p: 3, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
                     {/* Source & Date */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                       <Typography
                         variant="caption"
                         sx={{
@@ -188,11 +188,11 @@ const NewsPage = () => {
                       variant="h6"
                       sx={{
                         fontWeight: 700,
-                        mb: 2,
-                        fontSize: '1.1rem',
+                        mb: 1.5,
+                        fontSize: '1.05rem',
                         lineHeight: 1.4,
                         color: '#1a1a1a',
-                        height: '3em',
+                        height: '2.8em',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
@@ -208,15 +208,15 @@ const NewsPage = () => {
                       variant="body2"
                       sx={{
                         color: '#666',
-                        fontSize: '0.9rem',
-                        lineHeight: 1.6,
-                        height: '4.8em',
+                        fontSize: '0.875rem',
+                        lineHeight: 1.5,
+                        height: '4.5em',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
                         WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
-                        mb: 3,
+                        mb: 2,
                       }}
                     >
                       {article.description || 'No description available.'}
