@@ -61,58 +61,38 @@ const NewsPage = () => {
   ];
 
   return (
-    <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh', py: 6 }}>
+    <Box sx={{ bgcolor: '#f8f9fa', minHeight: '100vh', py: 4 }}>
       <Container maxWidth="lg">
-        {/* Header */}
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, mb: 2 }}>
-            <NewspaperIcon sx={{ fontSize: 48, color: '#667eea' }} />
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: 700,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Latest News
-            </Typography>
-          </Box>
-          <Typography variant="h6" color="text.secondary">
-            Stay updated with the latest headlines
-          </Typography>
-        </Box>
-
-        {/* Category Filter */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 6, flexWrap: 'wrap' }}>
+        {/* Category Filter - Simplified pill style */}
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 4, flexWrap: 'wrap' }}>
           {categories.map((cat) => (
             <Chip
               key={cat.value}
               label={cat.label}
               onClick={() => setCategory(cat.value)}
               sx={{
-                px: 2,
-                py: 3,
-                fontSize: '1rem',
-                fontWeight: 600,
+                px: 3,
+                py: 2.5,
+                fontSize: '0.95rem',
+                fontWeight: 500,
                 cursor: 'pointer',
-                transition: 'all 0.3s',
+                borderRadius: '50px',
+                transition: 'all 0.2s',
                 ...(category === cat.value
                   ? {
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      bgcolor: '#1976d2',
                       color: 'white',
                       '&:hover': {
-                        background: 'linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%)',
+                        bgcolor: '#1565c0',
                       },
                     }
                   : {
                       bgcolor: 'white',
-                      color: '#667eea',
-                      border: '2px solid #667eea',
+                      color: '#555',
+                      border: '1px solid #e0e0e0',
                       '&:hover': {
-                        bgcolor: '#f0f0ff',
+                        bgcolor: '#f5f5f5',
+                        borderColor: '#1976d2',
                       },
                     }),
               }}
@@ -123,7 +103,7 @@ const NewsPage = () => {
         {/* Loading */}
         {loading && (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-            <CircularProgress size={60} sx={{ color: '#667eea' }} />
+            <CircularProgress size={50} sx={{ color: '#1976d2' }} />
           </Box>
         )}
 
@@ -134,9 +114,9 @@ const NewsPage = () => {
           </Alert>
         )}
 
-        {/* News Grid */}
+        {/* News Grid - Clean card design */}
         {!loading && !error && news.length > 0 && (
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {news.map((article, index) => (
               <Grid item xs={12} md={4} key={index}>
                 <Card
@@ -144,11 +124,13 @@ const NewsPage = () => {
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                     transition: 'all 0.3s',
-                    borderRadius: 2,
                     '&:hover': {
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
                       transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 20px rgba(102, 126, 234, 0.15)',
                     },
                   }}
                 >
@@ -157,47 +139,45 @@ const NewsPage = () => {
                     <CardMedia
                       component="img"
                       sx={{
-                        height: 180,
+                        height: 200,
                         objectFit: 'cover',
                       }}
                       image={article.urlToImage}
                       alt={article.title}
                       onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/400x180?text=No+Image';
+                        e.target.src = 'https://via.placeholder.com/400x200?text=No+Image';
                       }}
                     />
                   ) : (
                     <Box
                       sx={{
-                        height: 180,
-                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        height: 200,
+                        bgcolor: '#e3f2fd',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
-                      <NewspaperIcon sx={{ fontSize: 60, color: 'rgba(255,255,255,0.5)' }} />
+                      <NewspaperIcon sx={{ fontSize: 60, color: '#90caf9' }} />
                     </Box>
                   )}
 
-                  <CardContent sx={{ flexGrow: 1, p: 2.5, display: 'flex', flexDirection: 'column', minHeight: 220 }}>
+                  <CardContent sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
                     {/* Source & Date */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                       <Typography
                         variant="caption"
                         sx={{
                           fontWeight: 600,
-                          color: '#667eea',
-                          fontSize: '0.75rem',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
+                          color: '#1976d2',
+                          fontSize: '0.8rem',
                         }}
                       >
                         {article.source.name}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <CalendarTodayIcon sx={{ fontSize: 12, color: 'text.secondary' }} />
-                        <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                        <CalendarTodayIcon sx={{ fontSize: 14, color: '#999' }} />
+                        <Typography variant="caption" sx={{ color: '#999', fontSize: '0.75rem' }}>
                           {formatDate(article.publishedAt)}
                         </Typography>
                       </Box>
@@ -208,10 +188,11 @@ const NewsPage = () => {
                       variant="h6"
                       sx={{
                         fontWeight: 700,
-                        mb: 1.5,
-                        fontSize: '1rem',
+                        mb: 2,
+                        fontSize: '1.1rem',
                         lineHeight: 1.4,
-                        height: '2.8em',
+                        color: '#1a1a1a',
+                        height: '3em',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
@@ -225,9 +206,9 @@ const NewsPage = () => {
                     {/* Description */}
                     <Typography
                       variant="body2"
-                      color="text.secondary"
                       sx={{
-                        fontSize: '0.875rem',
+                        color: '#666',
+                        fontSize: '0.9rem',
                         lineHeight: 1.6,
                         height: '4.8em',
                         overflow: 'hidden',
@@ -235,38 +216,35 @@ const NewsPage = () => {
                         display: '-webkit-box',
                         WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
-                        mb: 2,
+                        mb: 3,
                       }}
                     >
                       {article.description || 'No description available.'}
                     </Typography>
 
-                    {/* Spacer to push button to bottom */}
+                    {/* Spacer */}
                     <Box sx={{ flexGrow: 1 }} />
 
-                    {/* Read More Button */}
+                    {/* Read More Link */}
                     <Button
-                      size="small"
                       href={article.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      endIcon={<OpenInNewIcon />}
-                      fullWidth
+                      endIcon={<OpenInNewIcon sx={{ fontSize: 16 }} />}
                       sx={{
-                        color: '#667eea',
+                        color: '#1976d2',
                         fontWeight: 600,
-                        justifyContent: 'center',
                         textTransform: 'none',
-                        borderTop: '1px solid #f0f0f0',
-                        borderRadius: 0,
-                        py: 1,
-                        mt: 'auto',
+                        fontSize: '0.9rem',
+                        justifyContent: 'flex-start',
+                        px: 0,
                         '&:hover': {
-                          bgcolor: '#f8f8ff',
+                          bgcolor: 'transparent',
+                          textDecoration: 'underline',
                         },
                       }}
                     >
-                      Read Full Article
+                      Read More
                     </Button>
                   </CardContent>
                 </Card>
