@@ -20,6 +20,7 @@ import AdminApplicantsPage from './pages/AdminApplicantsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminAdminsPage from './pages/AdminAdminsPage';
 import ContactPage from './pages/ContactPage';
+import NewsPage from './pages/NewsPage';
 
 // Import Layout Components
 import Navbar from './components/Navbar';
@@ -50,6 +51,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/browse" element={<HomePage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/news" element={<NewsPage />} />
 
           {/* User Protected Routes */}
           <Route element={<UserProtectedRoute />}>

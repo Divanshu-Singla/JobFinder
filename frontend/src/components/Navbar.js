@@ -12,6 +12,7 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 const Navbar = () => {
   const { user, admin, logout } = useAuth(); 
@@ -138,6 +139,21 @@ const Navbar = () => {
                 </Button>
                 <Button 
                   color="inherit" 
+                  component={Link}
+                  to="/news"
+                  startIcon={<NewspaperIcon />}
+                  sx={{ 
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  News
+                </Button>
+                <Button 
+                  color="inherit" 
                   onClick={handleLogout}
                   startIcon={<LogoutIcon />}
                   sx={{ 
@@ -213,6 +229,21 @@ const Navbar = () => {
                   }}
                 >
                   Contact
+                </Button>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/news"
+                  startIcon={<NewspaperIcon />}
+                  sx={{ 
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  News
                 </Button>
                 
                 <IconButton
@@ -291,6 +322,21 @@ const Navbar = () => {
                   }}
                 >
                   Contact
+                </Button>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/news"
+                  startIcon={<NewspaperIcon />}
+                  sx={{ 
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  News
                 </Button>
                 <Button 
                   color="inherit" 
