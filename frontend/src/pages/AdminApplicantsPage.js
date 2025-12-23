@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import API from '../api';
+import PdfViewer from '../components/PdfViewer';
 import {
   Container,
   Box,
@@ -27,6 +28,8 @@ const AdminApplicantsPage = () => {
   const [job, setJob] = useState(null);
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pdfViewerOpen, setPdfViewerOpen] = useState(false);
+  const [selectedPdf, setSelectedPdf] = useState({ url: '', name: '' });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -135,10 +138,10 @@ const AdminApplicantsPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          component="a"
-                          href={applicant.resume}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={() => {
+                            setSelectedPdf({ url: applicant.resume, name: `${applicant.name}'s Resume` });
+                            setPdfViewerOpen(true);
+                          }}
                           sx={{ 
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -219,6 +222,14 @@ const AdminApplicantsPage = () => {
           </Button>
         </Box>
       </Paper>
+
+      {/* PDF Viewer Modal */}
+      <PdfViewer
+        open={pdfViewerOpen}
+        onClose={() => setPdfViewerOpen(false)}
+        pdfUrl={selectedPdf.url}
+        title={selectedPdf.name}
+      />
     </Container>
   );
 };

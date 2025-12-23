@@ -3,6 +3,7 @@ import { Link } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { updateUserProfile } from '../api';
+import PdfViewer from '../components/PdfViewer';
 import {
   Container, Box, Typography, TextField, Button, Grid,
   Paper, Avatar, CircularProgress, Chip, Divider, Alert
@@ -26,6 +27,7 @@ const UserDashboard = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
+  const [pdfViewerOpen, setPdfViewerOpen] = useState(false);
 
   // Pre-fill form with user data
   useEffect(() => {
@@ -489,12 +491,11 @@ const UserDashboard = () => {
                       Current Resume
                     </Typography>
                     <Link 
-                      href={user.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      component="button"
+                      onClick={() => setPdfViewerOpen(true)}
                       sx={{ fontSize: '0.8125rem', color: '#667eea', cursor: 'pointer', textAlign: 'left' }}
                     >
-                      Download Resume →
+                      View Resume →
                     </Link>
                   </Box>
                 </Box>
@@ -603,6 +604,16 @@ const UserDashboard = () => {
             </Box>
           </Box>
         </Paper>
+
+        {/* PDF Viewer Modal */}
+        {user?.resume && (
+          <PdfViewer
+            open={pdfViewerOpen}
+            onClose={() => setPdfViewerOpen(false)}
+            pdfUrl={user.resume}
+            title={`${user.name}'s Resume`}
+          />
+        )}
       </Container>
     </Box>
   );
