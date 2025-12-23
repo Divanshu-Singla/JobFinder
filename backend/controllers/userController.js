@@ -52,8 +52,12 @@ exports.updateUserProfile = async (req, res) => {
       // Clean up the URL
       resumeUrl = resumeUrl.replace(/\\/g, "/");
       
-      // If URL doesn't end with .pdf, the file might not have been uploaded correctly
-      // Store it anyway for debugging
+      // Add inline viewing flag to the URL for PDFs
+      // Convert: .../upload/... to .../upload/fl_attachment/...
+      if (resumeUrl.includes('/upload/')) {
+        resumeUrl = resumeUrl.replace('/upload/', '/upload/fl_attachment/');
+      }
+      
       profileFields.resume = resumeUrl;
       
       console.log('Resume uploaded:', {

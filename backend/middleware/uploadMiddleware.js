@@ -48,8 +48,7 @@ const storage = new CloudinaryStorage({
       format: format,
       allowed_formats: isResume ? ['pdf', 'doc', 'docx'] : ['jpg', 'jpeg', 'png'],
       public_id: publicId,
-      access_mode: 'public', // Ensure public access
-      flags: isResume ? 'attachment:false' : undefined, // Allow inline viewing for PDFs
+      type: 'upload', // Explicitly set upload type
       transformation: isProfilePhoto ? [
         { width: 800, height: 800, crop: 'limit' },
         { quality: 'auto:good' }
