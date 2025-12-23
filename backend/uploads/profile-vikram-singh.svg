@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-VS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f57c00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d75e00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#grad-VS)"/>
+  <text x="200" y="240" font-family="Arial, sans-serif" font-size="140" font-weight="bold" 
+        fill="white" text-anchor="middle" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+    VS
+  </text>
+</svg>
