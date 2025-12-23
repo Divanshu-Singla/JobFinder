@@ -4,6 +4,191 @@ import React, { useState, useEffect } from 'react';
 import { FaNewspaper, FaExternalLinkAlt, FaCalendarAlt, FaSpinner } from 'react-icons/fa';
 import API from '../api';
 
+const styles = {
+  container: {
+    minHeight: '100vh',
+    backgroundColor: '#f3f4f6',
+    padding: '32px 16px',
+  },
+  maxWidthContainer: {
+    maxWidth: '1280px',
+    margin: '0 auto',
+  },
+  header: {
+    textAlign: 'center',
+    marginBottom: '32px',
+  },
+  headerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '12px',
+    marginBottom: '16px',
+  },
+  headerIcon: {
+    fontSize: '48px',
+    color: '#2563eb',
+  },
+  headerTitle: {
+    fontSize: '36px',
+    fontWeight: 'bold',
+    color: '#1f2937',
+    margin: 0,
+  },
+  headerSubtitle: {
+    color: '#6b7280',
+    margin: 0,
+  },
+  categoryContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '12px',
+    marginBottom: '32px',
+    flexWrap: 'wrap',
+  },
+  categoryButton: {
+    padding: '8px 24px',
+    borderRadius: '50px',
+    fontWeight: '500',
+    border: 'none',
+    cursor: 'pointer',
+    transition: 'all 0.3s',
+  },
+  categoryButtonActive: {
+    backgroundColor: '#2563eb',
+    color: 'white',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+  },
+  categoryButtonInactive: {
+    backgroundColor: 'white',
+    color: '#374151',
+  },
+  loadingContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '80px 0',
+  },
+  spinnerIcon: {
+    fontSize: '48px',
+    color: '#2563eb',
+    animation: 'spin 1s linear infinite',
+  },
+  errorContainer: {
+    backgroundColor: '#fee2e2',
+    border: '1px solid #f87171',
+    color: '#991b1b',
+    padding: '24px',
+    borderRadius: '8px',
+    textAlign: 'center',
+    marginBottom: '32px',
+  },
+  newsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(1, 1fr)',
+    gap: '24px',
+  },
+  newsCard: {
+    backgroundColor: 'white',
+    borderRadius: '8px',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+    overflow: 'hidden',
+    transition: 'all 0.3s',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '520px',
+  },
+  newsImage: {
+    width: '100%',
+    height: '192px',
+    objectFit: 'cover',
+  },
+  newsImagePlaceholder: {
+    width: '100%',
+    height: '192px',
+    background: 'linear-gradient(to bottom right, #60a5fa, #a78bfa)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  placeholderIcon: {
+    fontSize: '60px',
+    color: 'white',
+    opacity: 0.5,
+  },
+  cardContent: {
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    flexGrow: 1,
+  },
+  sourceRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '12px',
+    fontSize: '14px',
+    color: '#6b7280',
+  },
+  sourceName: {
+    fontWeight: '600',
+    color: '#2563eb',
+  },
+  dateRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  cardTitle: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: '12px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    lineHeight: '1.4',
+    height: '2.8em',
+  },
+  cardDescription: {
+    color: '#6b7280',
+    fontSize: '14px',
+    marginBottom: '16px',
+    flexGrow: 1,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: 'vertical',
+    lineHeight: '1.5',
+  },
+  readMoreLink: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    color: '#2563eb',
+    fontWeight: '600',
+    textDecoration: 'none',
+    transition: 'color 0.3s',
+  },
+  noNewsContainer: {
+    textAlign: 'center',
+    padding: '80px 0',
+    color: '#6b7280',
+  },
+  noNewsIcon: {
+    fontSize: '60px',
+    margin: '0 auto 16px',
+    opacity: 0.3,
+  },
+  noNewsText: {
+    fontSize: '20px',
+    margin: 0,
+  },
+};
+
 const NewsPage = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,120 +230,154 @@ const NewsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <FaNewspaper className="text-5xl text-blue-600" />
-            <h1 className="text-4xl font-bold text-gray-800">Latest News</h1>
+    <>
+      <style>
+        {`
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          .news-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+          }
+          .category-btn-inactive:hover {
+            background-color: #dbeafe;
+          }
+          .read-more-link:hover {
+            color: #1e40af;
+          }
+          @media (min-width: 768px) {
+            .news-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+          @media (min-width: 1024px) {
+            .news-grid {
+              grid-template-columns: repeat(3, 1fr);
+            }
+          }
+        `}
+      </style>
+      <div style={styles.container}>
+        <div style={styles.maxWidthContainer}>
+          {/* Header */}
+          <div style={styles.header}>
+            <div style={styles.headerContent}>
+              <FaNewspaper style={styles.headerIcon} />
+              <h1 style={styles.headerTitle}>Latest News</h1>
+            </div>
+            <p style={styles.headerSubtitle}>Stay updated with the latest headlines</p>
           </div>
-          <p className="text-gray-600">Stay updated with the latest headlines</p>
-        </div>
 
-        {/* Category Filter */}
-        <div className="flex justify-center gap-3 mb-8 flex-wrap">
-          {categories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setCategory(cat.value)}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                category === cat.value
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-blue-100"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Loading */}
-        {loading && (
-          <div className="flex justify-center items-center py-20">
-            <FaSpinner className="animate-spin text-5xl text-blue-600" />
-          </div>
-        )}
-
-        {/* Error */}
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg text-center mb-8">
-            {error}
-          </div>
-        )}
-
-        {/* News Grid */}
-        {!loading && !error && news.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {news.map((article, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-[520px]"
+          {/* Category Filter */}
+          <div style={styles.categoryContainer}>
+            {categories.map((cat) => (
+              <button
+                key={cat.value}
+                onClick={() => setCategory(cat.value)}
+                style={{
+                  ...styles.categoryButton,
+                  ...(category === cat.value
+                    ? styles.categoryButtonActive
+                    : styles.categoryButtonInactive),
+                }}
+                className={category === cat.value ? '' : 'category-btn-inactive'}
               >
-                {/* Image */}
-                {article.urlToImage ? (
-                  <img
-                    src={article.urlToImage}
-                    alt={article.title}
-                    className="w-full h-48 object-cover"
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/400x200?text=No+Image";
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                    <FaNewspaper className="text-6xl text-white opacity-50" />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div className="p-5 flex flex-col flex-grow">
-                  {/* Source & Date */}
-                  <div className="flex items-center justify-between mb-3 text-sm text-gray-500">
-                    <span className="font-semibold text-blue-600">
-                      {article.source.name}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <FaCalendarAlt />
-                      {formatDate(article.publishedAt)}
-                    </span>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-lg font-bold text-gray-800 mb-3 line-clamp-2">
-                    {article.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-gray-600 text-sm mb-4 flex-grow line-clamp-3">
-                    {article.description || "No description available."}
-                  </p>
-
-                  {/* Read More Button */}
-                  <a
-                    href={article.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-800 transition-colors"
-                  >
-                    Read More
-                    <FaExternalLinkAlt className="text-sm" />
-                  </a>
-                </div>
-              </div>
+                {cat.label}
+              </button>
             ))}
           </div>
-        )}
 
-        {/* No News */}
-        {!loading && !error && news.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            <FaNewspaper className="text-6xl mx-auto mb-4 opacity-30" />
-            <p className="text-xl">No news available at the moment.</p>
-          </div>
-        )}
+          {/* Loading */}
+          {loading && (
+            <div style={styles.loadingContainer}>
+              <FaSpinner style={styles.spinnerIcon} />
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div style={styles.errorContainer}>
+              {error}
+            </div>
+          )}
+
+          {/* News Grid */}
+          {!loading && !error && news.length > 0 && (
+            <div style={styles.newsGrid} className="news-grid">
+              {news.map((article, index) => (
+                <div
+                  key={index}
+                  style={styles.newsCard}
+                  className="news-card"
+                >
+                  {/* Image */}
+                  {article.urlToImage ? (
+                    <img
+                      src={article.urlToImage}
+                      alt={article.title}
+                      style={styles.newsImage}
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/400x200?text=No+Image";
+                      }}
+                    />
+                  ) : (
+                    <div style={styles.newsImagePlaceholder}>
+                      <FaNewspaper style={styles.placeholderIcon} />
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div style={styles.cardContent}>
+                    {/* Source & Date */}
+                    <div style={styles.sourceRow}>
+                      <span style={styles.sourceName}>
+                        {article.source.name}
+                      </span>
+                      <span style={styles.dateRow}>
+                        <FaCalendarAlt />
+                        {formatDate(article.publishedAt)}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 style={styles.cardTitle}>
+                      {article.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p style={styles.cardDescription}>
+                      {article.description || "No description available."}
+                    </p>
+
+                    {/* Read More Button */}
+                    <a
+                      href={article.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={styles.readMoreLink}
+                      className="read-more-link"
+                    >
+                      Read More
+                      <FaExternalLinkAlt style={{ fontSize: '12px' }} />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* No News */}
+          {!loading && !error && news.length === 0 && (
+            <div style={styles.noNewsContainer}>
+              <FaNewspaper style={styles.noNewsIcon} />
+              <p style={styles.noNewsText}>No news available at the moment.</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
