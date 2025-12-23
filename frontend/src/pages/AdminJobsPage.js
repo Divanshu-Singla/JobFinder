@@ -24,6 +24,14 @@ import {
   TextField,
   MenuItem
 } from '@mui/material';
+import {
+  validateJobTitle,
+  validateCompanyName,
+  validateLocation,
+  validateSalary,
+  validateExperience,
+  validateDescription
+} from '../utils/validation';
 
 const AdminJobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -39,6 +47,8 @@ const AdminJobsPage = () => {
     description: '',
     jobType: 'Full-time'
   });
+  const [validationErrors, setValidationErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,13 +95,87 @@ const AdminJobsPage = () => {
       description: '',
       jobType: 'Full-time'
     });
+    setValidationErrors({});
+    setTouched({});
+  };
+
+  const validateField = (name, value) => {
+    let error = '';
+    
+    switch (name) {
+      case 'title':
+        error = validateJobTitle(value);
+        break;
+      case 'companyName':
+        error = validateCompanyName(value);
+        break;
+      case 'location':
+        error = validateLocation(value);
+        break;
+      case 'salary':
+        error = validateSalary(value);
+        break;
+      case 'experienceRequired':
+        error = validateExperience(value);
+        break;
+      case 'description':
+        error = validateDescription(value, 10, 5000);
+        break;
+      default:
+        break;
+    }
+    
+    setValidationErrors(prev => ({ ...prev, [name]: error || '' }));
+    return error === null;
   };
 
   const handleInputChange = (e) => {
-    setNewJob({ ...newJob, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setNewJob({ ...newJob, [name]: value });
+    
+    // Real-time validation for touched fields
+    if (touched[name]) {
+      validateField(name, value);
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched({ ...touched, [name]: true });
+    validateField(name, value);
   };
 
   const handleCreateJob = async () => {
+    // Validate all fields before submission
+    const errors = {
+      title: validateJobTitle(newJob.title),
+      companyName: validateCompanyName(newJob.companyName),
+      location: validateLocation(newJob.location),
+      salary: validateSalary(newJob.salary),
+      experienceRequired: validateExperience(newJob.experienceRequired),
+      description: validateDescription(newJob.description, 10, 5000)
+    };
+    
+    // Filter out null values (no errors)
+    const filteredErrors = Object.fromEntries(
+      Object.entries(errors).filter(([_, value]) => value !== null)
+    );
+    
+    if (Object.keys(filteredErrors).length > 0) {
+      setValidationErrors(filteredErrors);
+      setTouched({
+        title: true,
+        companyName: true,
+        location: true,
+        salary: true,
+        experienceRequired: true,
+        description: true
+      });
+      setMessage('Please fix all validation errors before submitting');
+      setTimeout(() => setMessage(''), 3000);
+      return;
+    }
+    
     try {
       await API.post('/admin/jobs', newJob);
       setMessage('Job created successfully');
@@ -237,8 +321,11 @@ const AdminJobsPage = () => {
             name="title"
             value={newJob.title}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             margin="normal"
             required
+            error={touched.title && !!validationErrors.title}
+            helperText={touched.title && validationErrors.title}
           />
           <TextField
             fullWidth
@@ -246,8 +333,11 @@ const AdminJobsPage = () => {
             name="companyName"
             value={newJob.companyName}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             margin="normal"
             required
+            error={touched.companyName && !!validationErrors.companyName}
+            helperText={touched.companyName && validationErrors.companyName}
           />
           <TextField
             fullWidth
@@ -255,8 +345,11 @@ const AdminJobsPage = () => {
             name="location"
             value={newJob.location}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             margin="normal"
             required
+            error={touched.location && !!validationErrors.location}
+            helperText={touched.location && validationErrors.location}
           />
           <TextField
             fullWidth
@@ -265,8 +358,11 @@ const AdminJobsPage = () => {
             type="number"
             value={newJob.salary}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             margin="normal"
             required
+            error={touched.salary && !!validationErrors.salary}
+            helperText={touched.salary && validationErrors.salary}
           />
           <TextField
             fullWidth
@@ -275,8 +371,11 @@ const AdminJobsPage = () => {
             type="number"
             value={newJob.experienceRequired}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             margin="normal"
             required
+            error={touched.experienceRequired && !!validationErrors.experienceRequired}
+            helperText={touched.experienceRequired && validationErrors.experienceRequired}
           />
           <TextField
             fullWidth
@@ -298,10 +397,13 @@ const AdminJobsPage = () => {
             name="description"
             value={newJob.description}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             margin="normal"
             multiline
             rows={4}
             required
+            error={touched.description && !!validationErrors.description}
+            helperText={touched.description && validationErrors.description}
           />
         </DialogContent>
         <DialogActions>

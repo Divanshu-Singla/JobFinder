@@ -1,10 +1,26 @@
 // src/api/index.js
 
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
-// Create an Axios instance with a base URL from environment variable
+// Create an Axios instance with a base URL from environment variable and timeout
 const API = axios.create({ 
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api' 
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api',
+  timeout: 30000 // 30 second timeout
+});
+
+// Configure automatic retry logic for network errors
+axiosRetry(API, {
+  retries: 3, // Retry failed requests up to 3 times
+  retryDelay: axiosRetry.exponentialDelay, // Exponential backoff delay
+  retryCondition: (error) => {
+    // Retry on network errors or rate limit errors
+    return axiosRetry.isNetworkOrIdempotentRequestError(error) 
+      || error.response?.status === 429; // Rate limit
+  },
+  onRetry: (retryCount, error, requestConfig) => {
+    console.log(`Retrying request to ${requestConfig.url} (attempt ${retryCount})`);
+  }
 });
 
 // This is a crucial part. On every request, this function will run first.
