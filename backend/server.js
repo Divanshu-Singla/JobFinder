@@ -74,8 +74,8 @@ app.use(xss());
 app.use(express.json({ limit: constants.JSON_BODY_LIMIT }));
 app.use(express.urlencoded({ extended: true, limit: constants.JSON_BODY_LIMIT }));
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Note: Files are now stored on Cloudinary, not local filesystem
+// No need to serve static files from /uploads
 
 // Root endpoint - API information
 app.get('/', (req, res) => {

@@ -23,7 +23,10 @@ export const SocketProvider = ({ children }) => {
 
     // Only connect if we have a token
     if (token) {
-      const SOCKET_URL = process.env.REACT_APP_API_BASE_URL?.replace('/api', '') || 'http://localhost:5000';
+      // More robust Socket URL parsing - removes trailing /api or /api/
+      const SOCKET_URL = process.env.REACT_APP_API_BASE_URL?.replace(/\/api\/?$/, '') || 'http://localhost:5000';
+      
+      console.log('Connecting to Socket.io server:', SOCKET_URL);
       
       const newSocket = io(SOCKET_URL, {
         auth: { token },

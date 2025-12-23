@@ -156,7 +156,7 @@ const UserDashboard = () => {
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
                 <Avatar
-                  src={user.profilePhoto ? `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/${user.profilePhoto}` : ''}
+                  src={user.profilePhoto || ''}
                   sx={{ 
                     width: { xs: 80, md: 100 }, 
                     height: { xs: 80, md: 100 },
@@ -475,7 +475,7 @@ const UserDashboard = () => {
                       Current Resume
                     </Typography>
                     <Link 
-                      href={`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/${user.resume}`} 
+                      href={user.resume} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       sx={{ fontSize: '0.8125rem', color: '#667eea' }}

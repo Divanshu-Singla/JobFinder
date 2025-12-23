@@ -24,6 +24,7 @@ import AdminAdminsPage from './pages/AdminAdminsPage';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import NotificationSnackbar from './components/NotificationSnackbar';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Import Protected Route Components
 import UserProtectedRoute from './components/UserProtectedRoute';
@@ -32,9 +33,10 @@ import AdminProtectedRoute from './components/AdminProtectedRoute';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline /> {/* Normalizes CSS across browsers */}
-      <NotificationSnackbar />
+    <ErrorBoundary>
+      <ThemeProvider theme={theme}>
+        <CssBaseline /> {/* Normalizes CSS across browsers */}
+        <NotificationSnackbar />
       <Router>
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Navbar />
@@ -69,6 +71,7 @@ function App() {
         </Box>
       </Router>
     </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
