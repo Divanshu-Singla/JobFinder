@@ -8,14 +8,9 @@ import {
   TextField,
   Button,
   Box,
-  Grid,
   Alert,
   CircularProgress,
 } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIcon from '@mui/icons-material/Phone';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import API from '../api';
 
 const ContactPage = () => {
@@ -107,174 +102,180 @@ const ContactPage = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <Typography
-          variant="h3"
-          gutterBottom
+    <Box
+      sx={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        py: 4,
+      }}
+    >
+      <Container maxWidth="sm">
+        <Paper
+          elevation={8}
           sx={{
-            fontWeight: 700,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            p: { xs: 4, sm: 6 },
+            borderRadius: 4,
+            bgcolor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
           }}
         >
-          Get In Touch
-        </Typography>
-        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
-          Have questions or feedback? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-        </Typography>
-      </Box>
-
-      <Grid container spacing={4}>
-        {/* Contact Information */}
-        <Grid item xs={12} md={4}>
-          <Paper
-            elevation={0}
+          <Typography
+            variant="h4"
+            align="center"
+            gutterBottom
             sx={{
-              p: 3,
-              height: '100%',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
+              fontWeight: 700,
+              mb: 4,
+              color: '#1a1a1a',
             }}
           >
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-              Contact Information
-            </Typography>
+            Contact Us
+          </Typography>
 
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <EmailIcon sx={{ mr: 2 }} />
-                <Typography variant="body1" sx={{ fontWeight: 500 }}>Email</Typography>
-              </Box>
-              <Typography variant="body2" sx={{ ml: 5, opacity: 0.9 }}>
-                moksh2072@chitkara.edu.in
-              </Typography>
-            </Box>
+          {alert.show && (
+            <Alert
+              severity={alert.type}
+              onClose={() => setAlert({ ...alert, show: false })}
+              sx={{ mb: 3 }}
+            >
+              {alert.message}
+            </Alert>
+          )}
 
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <PhoneIcon sx={{ mr: 2 }} />
-                <Typography variant="body1" sx={{ fontWeight: 500 }}>Phone</Typography>
-              </Box>
-              <Typography variant="body2" sx={{ ml: 5, opacity: 0.9 }}>
-                +91 (123) 456-7890
-              </Typography>
-            </Box>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              placeholder="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              error={!!errors.name}
+              helperText={errors.name}
+              disabled={loading}
+              required
+              variant="standard"
+              sx={{
+                mb: 3,
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: '#ccc',
+                },
+                '& .MuiInput-underline:hover:before': {
+                  borderBottomColor: '#667eea',
+                },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: '#667eea',
+                },
+              }}
+            />
 
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <LocationOnIcon sx={{ mr: 2 }} />
-                <Typography variant="body1" sx={{ fontWeight: 500 }}>Address</Typography>
-              </Box>
-              <Typography variant="body2" sx={{ ml: 5, opacity: 0.9 }}>
-                Chitkara University<br />
-                Rajpura, Punjab, India
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
+            <TextField
+              fullWidth
+              placeholder="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              error={!!errors.email}
+              helperText={errors.email}
+              disabled={loading}
+              required
+              variant="standard"
+              sx={{
+                mb: 3,
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: '#ccc',
+                },
+                '& .MuiInput-underline:hover:before': {
+                  borderBottomColor: '#667eea',
+                },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: '#667eea',
+                },
+              }}
+            />
 
-        {/* Contact Form */}
-        <Grid item xs={12} md={8}>
-          <Paper elevation={0} sx={{ p: 4, border: '1px solid #e0e0e0' }}>
-            {alert.show && (
-              <Alert
-                severity={alert.type}
-                onClose={() => setAlert({ ...alert, show: false })}
-                sx={{ mb: 3 }}
-              >
-                {alert.message}
-              </Alert>
-            )}
+            <TextField
+              fullWidth
+              placeholder="Subject"
+              name="subject"
+              value={formData.subject}
+              onChange={handleChange}
+              error={!!errors.subject}
+              helperText={errors.subject}
+              disabled={loading}
+              required
+              variant="standard"
+              sx={{
+                mb: 3,
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: '#ccc',
+                },
+                '& .MuiInput-underline:hover:before': {
+                  borderBottomColor: '#667eea',
+                },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: '#667eea',
+                },
+              }}
+            />
 
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Your Name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    error={!!errors.name}
-                    helperText={errors.name}
-                    disabled={loading}
-                    required
-                  />
-                </Grid>
+            <TextField
+              fullWidth
+              placeholder="Message"
+              name="message"
+              multiline
+              rows={4}
+              value={formData.message}
+              onChange={handleChange}
+              error={!!errors.message}
+              helperText={errors.message}
+              disabled={loading}
+              required
+              variant="standard"
+              sx={{
+                mb: 4,
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: '#ccc',
+                },
+                '& .MuiInput-underline:hover:before': {
+                  borderBottomColor: '#667eea',
+                },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: '#667eea',
+                },
+              }}
+            />
 
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Your Email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    error={!!errors.email}
-                    helperText={errors.email}
-                    disabled={loading}
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    error={!!errors.subject}
-                    helperText={errors.subject}
-                    disabled={loading}
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Message"
-                    name="message"
-                    multiline
-                    rows={6}
-                    value={formData.message}
-                    onChange={handleChange}
-                    error={!!errors.message}
-                    helperText={errors.message}
-                    disabled={loading}
-                    required
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    endIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
-                    disabled={loading}
-                    sx={{
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      px: 4,
-                      py: 1.5,
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%)',
-                      },
-                    }}
-                  >
-                    {loading ? 'Sending...' : 'Send Message'}
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              size="large"
+              disabled={loading}
+              sx={{
+                py: 1.5,
+                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                fontSize: '1rem',
+                fontWeight: 600,
+                textTransform: 'none',
+                borderRadius: 2,
+                '&:hover': {
+                  background: 'linear-gradient(90deg, #5568d3 0%, #6a3f8f 100%)',
+                },
+                '&:disabled': {
+                  background: '#ccc',
+                },
+              }}
+            >
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
+            </Button>
+          </form>
+        </Paper>
+      </Container>
+    </Box>
   );
 };
 
