@@ -35,11 +35,11 @@
     }
   ],
   "env": {
-    "REACT_APP_API_BASE_URL": "https://your-backend.onrender.com/api"
+    "REACT_APP_API_BASE_URL": "https://jobfinder-psfp.onrender.com/api"
   },
   "build": {
     "env": {
-      "REACT_APP_API_BASE_URL": "https://your-backend.onrender.com/api"
+      "REACT_APP_API_BASE_URL": "https://jobfinder-psfp.onrender.com/api"
     }
   }
 }
