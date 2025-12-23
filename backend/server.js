@@ -80,6 +80,13 @@ app.use(express.urlencoded({ extended: true, limit: constants.JSON_BODY_LIMIT })
 app.use('/uploads', (req, res, next) => {
   res.header('Cross-Origin-Resource-Policy', 'cross-origin');
   res.header('Access-Control-Allow-Origin', '*');
+  
+  // Set proper Content-Type for PDFs to display in browser
+  if (req.path.endsWith('.pdf')) {
+    res.header('Content-Type', 'application/pdf');
+    res.header('Content-Disposition', 'inline'); // Force display instead of download
+  }
+  
   next();
 }, express.static(path.join(__dirname, 'uploads')));
 
