@@ -110,6 +110,7 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/jobs', require('./routes/api/jobs'));
 app.use('/api/contact', require('./routes/api/contact'));
 app.use('/api/news', require('./routes/api/news'));
+app.use('/api/resume', require('./routes/api/resume'));
 
 // Ignore favicon requests to prevent 404 errors in logs
 app.get('/favicon.ico', (req, res) => res.status(204).end());

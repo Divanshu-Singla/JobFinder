@@ -136,9 +136,7 @@ const AdminApplicantsPage = () => {
                           size="small"
                           variant="contained"
                           onClick={() => {
-                            const resumeUrl = applicant.resume.startsWith('http') 
-                              ? applicant.resume 
-                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${applicant.resume}`;
+                            const resumeUrl = `${process.env.REACT_APP_API_BASE_URL}/resume/${applicant.userId}`;
                             window.open(resumeUrl, '_blank', 'noopener,noreferrer');
                           }}
                           sx={{ 

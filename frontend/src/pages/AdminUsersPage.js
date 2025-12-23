@@ -132,9 +132,7 @@ const AdminUsersPage = () => {
                           size="small"
                           variant="contained"
                           onClick={() => {
-                            const resumeUrl = user.resume.startsWith('http')
-                              ? user.resume
-                              : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.resume}`;
+                            const resumeUrl = `${process.env.REACT_APP_API_BASE_URL}/resume/${user._id}`;
                             window.open(resumeUrl, '_blank', 'noopener,noreferrer');
                           }}
                           sx={{

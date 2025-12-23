@@ -491,9 +491,7 @@ const UserDashboard = () => {
                     <Link 
                       component="button"
                       onClick={() => {
-                        const resumeUrl = user.resume.startsWith('http')
-                          ? user.resume
-                          : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.resume}`;
+                        const resumeUrl = `${process.env.REACT_APP_API_BASE_URL}/resume/${user._id}`;
                         window.open(resumeUrl, '_blank', 'noopener,noreferrer');
                       }}
                       sx={{ fontSize: '0.8125rem', color: '#667eea', cursor: 'pointer', textAlign: 'left' }}
