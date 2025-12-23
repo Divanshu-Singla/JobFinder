@@ -11,7 +11,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import NewspaperIcon from '@mui/icons-material/Newspaper';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 
 const Navbar = () => {
   const { user, admin, logout } = useAuth(); 
@@ -123,6 +123,21 @@ const Navbar = () => {
                 )}
                 <Button 
                   color="inherit" 
+                  component={Link}
+                  to="/contact"
+                  startIcon={<ContactMailIcon />}
+                  sx={{ 
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  Contact
+                </Button>
+                <Button 
+                  color="inherit" 
                   onClick={handleLogout}
                   startIcon={<LogoutIcon />}
                   sx={{ 
@@ -187,8 +202,8 @@ const Navbar = () => {
                 <Button 
                   color="inherit" 
                   component={Link} 
-                  to="/news"
-                  startIcon={<NewspaperIcon />}
+                  to="/contact"
+                  startIcon={<ContactMailIcon />}
                   sx={{ 
                     textTransform: 'none',
                     fontSize: '1rem',
@@ -197,7 +212,7 @@ const Navbar = () => {
                     '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
                   }}
                 >
-                  News
+                  Contact
                 </Button>
                 
                 <IconButton
@@ -247,6 +262,36 @@ const Navbar = () => {
             ) : (
               // Guest Menu
               <>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/browse"
+                  startIcon={<BusinessCenterIcon />}
+                  sx={{ 
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  Browse Jobs
+                </Button>
+                <Button 
+                  color="inherit" 
+                  component={Link} 
+                  to="/contact"
+                  startIcon={<ContactMailIcon />}
+                  sx={{ 
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    px: 2,
+                    '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                  }}
+                >
+                  Contact
+                </Button>
                 <Button 
                   color="inherit" 
                   component={Link} 

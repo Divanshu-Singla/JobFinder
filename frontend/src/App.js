@@ -19,7 +19,7 @@ import AdminJobsPage from './pages/AdminJobsPage';
 import AdminApplicantsPage from './pages/AdminApplicantsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import AdminAdminsPage from './pages/AdminAdminsPage';
-import NewsPage from './pages/NewsPage';
+import ContactPage from './pages/ContactPage';
 
 // Import Layout Components
 import Navbar from './components/Navbar';
@@ -49,7 +49,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/browse" element={<HomePage />} />
-          <Route path="/news" element={<NewsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           {/* User Protected Routes */}
           <Route element={<UserProtectedRoute />}>
