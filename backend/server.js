@@ -12,6 +12,7 @@ const logger = require('./config/logger');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 const constants = require('./config/constants');
 const { initializeSocket } = require('./config/socket');
+const { initGridFS } = require('./config/gridfs');
 require('dotenv').config();
 
 // Initialize Express application
@@ -111,6 +112,7 @@ app.use('/api/jobs', require('./routes/api/jobs'));
 app.use('/api/contact', require('./routes/api/contact'));
 app.use('/api/news', require('./routes/api/news'));
 app.use('/api/resume', require('./routes/api/resume'));
+app.use('/api/files', require('./routes/api/files')); // GridFS file serving
 
 // Ignore favicon requests to prevent 404 errors in logs
 app.get('/favicon.ico', (req, res) => res.status(204).end());

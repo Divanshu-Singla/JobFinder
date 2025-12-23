@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const { authUser } = require('../../middleware/authMiddleware');
-const { upload, validateUploadedFiles } = require('../../middleware/uploadMiddleware');
+const { upload } = require('../../middleware/uploadMiddlewareGridFS');
 const { validateUserProfile, validateJobId } = require('../../middleware/validationMiddleware');
 const {
   getUserProfile,
@@ -30,7 +30,6 @@ router.put(
   '/profile',
   authUser,
   upload.fields([{ name: 'profilePhoto', maxCount: 1 }, { name: 'resume', maxCount: 1 }]),
-  validateUploadedFiles,
   validateUserProfile,
   updateUserProfile
 );

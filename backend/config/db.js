@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const logger = require('./logger');
 const constants = require('./constants');
+const { initGridFS } = require('./gridfs');
 require('dotenv').config();
 
 /**
@@ -17,6 +18,11 @@ const connectDB = async () => {
       });
 
       logger.info(`MongoDB Connected: ${conn.connection.host}`);
+      
+      // Initialize GridFS after successful MongoDB connection
+      mongoose.connection.once('open', () => {
+        initGridFS();
+      });
       
       // Handle connection events
       mongoose.connection.on('disconnected', () => {

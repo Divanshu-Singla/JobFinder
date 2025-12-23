@@ -3,7 +3,7 @@
 const User = require('../models/User');
 const Job = require('../models/Job');
 const { notifyAllAdmins } = require('../config/socket');
-const path = require('path');
+const { uploadToGridFS } = require('../middleware/uploadMiddlewareGridFS');
 
 // === User Profile Management ===
 
@@ -38,27 +38,29 @@ exports.updateUserProfile = async (req, res) => {
 
   // Check for uploaded files
   if (req.files) {
-    // New corrected code
-    if (req.files.profilePhoto) {
-      profileFields.profilePhoto = req.files.profilePhoto[0].path.replace(/\\/g, "/");
-    }
-    if (req.files.resume) {
-      const resumeFile = req.files.resume[0];
+    try {
+      // Upload profile photo to GridFS
+      if (req.files.profilePhoto) {
+        const photoFile = req.files.profilePhoto[0];
+        const result = await uploadToGridFS(photoFile, 'profilePhoto');
+        profileFields.profilePhoto = result.url;
+      }
       
-      // Use the Cloudinary URL directly without modifications
-      // Cloudinary will serve raw PDFs with the URL as-is
-      let resumeUrl = resumeFile.secure_url || resumeFile.path;
-      
-      // Clean up the URL
-      resumeUrl = resumeUrl.replace(/\\/g, "/");
-      
-      profileFields.resume = resumeUrl;
-      
-      console.log('Resume uploaded:', {
-        originalName: resumeFile.originalname,
-        cloudinaryUrl: resumeUrl,
-        publicId: resumeFile.filename
-      });
+      // Upload resume to GridFS
+      if (req.files.resume) {
+        const resumeFile = req.files.resume[0];
+        const result = await uploadToGridFS(resumeFile, 'resume');
+        profileFields.resume = result.url;
+        
+        console.log('Resume uploaded to GridFS:', {
+          originalName: resumeFile.originalname,
+          fileId: result.fileId,
+          url: result.url
+        });
+      }
+    } catch (uploadError) {
+      console.error('File upload error:', uploadError);
+      return res.status(500).json({ msg: 'File upload failed', error: uploadError.message });
     }
   }
 
