@@ -139,7 +139,15 @@ const AdminApplicantsPage = () => {
                             const resumeUrl = applicant.resume.startsWith('http') 
                               ? applicant.resume 
                               : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${applicant.resume}`;
-                            window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+                            // Create a temporary link to download with proper filename
+                            const link = document.createElement('a');
+                            link.href = resumeUrl;
+                            link.download = `${applicant.name.replace(/\s+/g, '_')}_resume.pdf`;
+                            link.target = '_blank';
+                            link.rel = 'noopener noreferrer';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
                           }}
                           sx={{ 
                             textTransform: 'none',
