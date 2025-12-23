@@ -25,9 +25,12 @@ router.get('/:fileId', async (req, res) => {
 
     const file = files[0];
 
-    // Set response headers for inline viewing
+    // Set response headers for inline viewing and iframe embedding
     res.set('Content-Type', file.contentType);
     res.set('Content-Disposition', 'inline'); // Force inline viewing in browser
+    res.set('Access-Control-Allow-Origin', '*'); // Allow all origins for file viewing
+    res.set('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin embedding
+    res.set('X-Content-Type-Options', 'nosniff');
     
     // Stream file from GridFS
     const downloadStream = bucket.openDownloadStream(fileId);

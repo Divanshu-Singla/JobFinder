@@ -41,7 +41,9 @@ app.use(cors(corsOptions));
 // Security Middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Disable for API-only backend
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }, // Allow cross-origin resources
+  frameguard: false // Disable X-Frame-Options to allow iframe embedding
 }));
 
 // Rate Limiting
