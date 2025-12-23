@@ -2,7 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
 const User = require('../../models/User');
 
 // @route   GET /api/resume/:userId
@@ -19,21 +18,13 @@ router.get('/:userId', async (req, res) => {
     // Get the Cloudinary URL
     let resumeUrl = user.resume;
     
-    // Fetch the file from Cloudinary
-    const response = await axios.get(resumeUrl, {
-      responseType: 'stream'
-    });
-
-    // Set proper headers for PDF download
-    const filename = `${user.name.replace(/\s+/g, '_')}_Resume.pdf`;
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
+    // For Cloudinary, just redirect with proper response type
+    // Let Cloudinary handle the streaming directly
+    res.redirect(resumeUrl);
     
-    // Stream the file to the response
-    response.data.pipe(res);
   } catch (error) {
     console.error('Error fetching resume:', error);
-    res.status(500).json({ message: 'Error fetching resume' });
+    res.status(500).json({ message: 'Error fetching resume', error: error.message });
   }
 });
 
