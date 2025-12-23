@@ -133,13 +133,19 @@ const AdminUsersPage = () => {
                           variant="contained"
                           onClick={async () => {
                             try {
-                              const response = await fetch(user.resume);
+                              console.log('Fetching resume from URL:', user.resume);
+                              const response = await fetch(user.resume, {
+                                mode: 'cors',
+                                credentials: 'omit'
+                              });
+                              console.log('Fetch response status:', response.status, response.statusText);
                               if (!response.ok) {
-                                throw new Error('Failed to fetch resume');
+                                throw new Error(`HTTP error! status: ${response.status}`);
                               }
                               const contentType = response.headers.get('content-type');
                               console.log('Resume content-type:', contentType);
                               const blob = await response.blob();
+                              console.log('Blob size:', blob.size, 'type:', blob.type);
                               // Create blob with explicit PDF MIME type
                               const pdfBlob = new Blob([blob], { type: 'application/pdf' });
                               const url = window.URL.createObjectURL(pdfBlob);
@@ -152,7 +158,13 @@ const AdminUsersPage = () => {
                               window.URL.revokeObjectURL(url);
                             } catch (error) {
                               console.error('Download failed:', error);
-                              alert('Failed to download resume: ' + error.message);
+                              // Fallback: try opening in new window
+                              const shouldTryOpen = window.confirm(
+                                'Direct download failed. Would you like to try opening the resume in a new window instead?'
+                              );
+                              if (shouldTryOpen) {
+                                window.open(user.resume, '_blank');
+                              }
                             }
                           }}
                           sx={{
