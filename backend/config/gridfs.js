@@ -2,7 +2,6 @@
 // GridFS configuration for storing files in MongoDB
 
 const mongoose = require('mongoose');
-const { GridFSBucket } = require('mongodb');
 
 let bucket;
 
@@ -14,6 +13,10 @@ const initGridFS = () => {
       console.error('MongoDB connection not ready for GridFS initialization');
       return null;
     }
+    
+    // Use GridFSBucket from mongoose's mongodb driver
+    const { GridFSBucket } = mongoose.mongo;
+    
     bucket = new GridFSBucket(db, {
       bucketName: 'uploads' // Collection name will be uploads.files and uploads.chunks
     });

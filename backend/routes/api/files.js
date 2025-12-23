@@ -12,6 +12,8 @@ const { getGridFSBucket } = require('../../config/gridfs');
 router.get('/:fileId', async (req, res) => {
   try {
     const bucket = getGridFSBucket();
+    
+    // Use mongoose's ObjectId
     const fileId = new mongoose.Types.ObjectId(req.params.fileId);
 
     // Find file in GridFS
