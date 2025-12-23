@@ -73,7 +73,14 @@ const uploadToGridFS = (file, fieldname) => {
   return new Promise((resolve, reject) => {
     try {
       const bucket = getGridFSBucket();
+      
+      if (!bucket) {
+        return reject(new Error('GridFS bucket not initialized. MongoDB connection may not be ready.'));
+      }
+      
       const filename = `${fieldname}-${Date.now()}${path.extname(file.originalname)}`;
+      
+      console.log(`Starting GridFS upload for ${filename}`);
       
       // Create upload stream
       const uploadStream = bucket.openUploadStream(filename, {
@@ -87,7 +94,7 @@ const uploadToGridFS = (file, fieldname) => {
 
       // Handle upload completion
       uploadStream.on('finish', () => {
-        logger.info(`File uploaded to GridFS: ${filename}`);
+        logger.info(`File uploaded to GridFS: ${filename} with ID: ${uploadStream.id}`);
         resolve({
           fileId: uploadStream.id,
           filename: filename,
@@ -104,6 +111,7 @@ const uploadToGridFS = (file, fieldname) => {
       // Write buffer to stream
       uploadStream.end(file.buffer);
     } catch (error) {
+      console.error('Error in uploadToGridFS:', error);
       reject(error);
     }
   });

@@ -8,16 +8,26 @@ let bucket;
 
 // Initialize GridFS bucket once MongoDB is connected
 const initGridFS = () => {
-  const db = mongoose.connection.db;
-  bucket = new GridFSBucket(db, {
-    bucketName: 'uploads' // Collection name will be uploads.files and uploads.chunks
-  });
-  console.log('GridFS bucket initialized');
-  return bucket;
+  try {
+    const db = mongoose.connection.db;
+    if (!db) {
+      console.error('MongoDB connection not ready for GridFS initialization');
+      return null;
+    }
+    bucket = new GridFSBucket(db, {
+      bucketName: 'uploads' // Collection name will be uploads.files and uploads.chunks
+    });
+    console.log('GridFS bucket initialized successfully');
+    return bucket;
+  } catch (error) {
+    console.error('Error initializing GridFS:', error);
+    return null;
+  }
 };
 
 const getGridFSBucket = () => {
   if (!bucket) {
+    console.log('GridFS bucket not initialized, attempting to initialize...');
     return initGridFS();
   }
   return bucket;

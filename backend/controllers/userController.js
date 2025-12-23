@@ -37,18 +37,23 @@ exports.updateUserProfile = async (req, res) => {
   }
 
   // Check for uploaded files
-  if (req.files) {
+  if (req.files && (req.files.profilePhoto || req.files.resume)) {
     try {
+      console.log('Processing file uploads...');
+      
       // Upload profile photo to GridFS
       if (req.files.profilePhoto) {
         const photoFile = req.files.profilePhoto[0];
+        console.log('Uploading profile photo:', photoFile.originalname);
         const result = await uploadToGridFS(photoFile, 'profilePhoto');
         profileFields.profilePhoto = result.url;
+        console.log('Profile photo uploaded:', result.url);
       }
       
       // Upload resume to GridFS
       if (req.files.resume) {
         const resumeFile = req.files.resume[0];
+        console.log('Uploading resume:', resumeFile.originalname);
         const result = await uploadToGridFS(resumeFile, 'resume');
         profileFields.resume = result.url;
         
@@ -60,6 +65,7 @@ exports.updateUserProfile = async (req, res) => {
       }
     } catch (uploadError) {
       console.error('File upload error:', uploadError);
+      console.error('Error stack:', uploadError.stack);
       return res.status(500).json({ msg: 'File upload failed', error: uploadError.message });
     }
   }
