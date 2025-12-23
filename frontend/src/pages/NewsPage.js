@@ -62,7 +62,7 @@ const NewsPage = () => {
 
   return (
     <Box sx={{ bgcolor: '#f8f9fa', minHeight: '100vh', py: 4 }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         {/* Category Filter - Simplified pill style */}
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 4, flexWrap: 'wrap' }}>
           {categories.map((cat) => (
@@ -116,9 +116,9 @@ const NewsPage = () => {
 
         {/* News Grid - Clean card design */}
         {!loading && !error && news.length > 0 && (
-          <Grid container spacing={3}>
+          <Grid container spacing={2.5}>
             {news.map((article, index) => (
-              <Grid item xs={12} sm={4} md={4} key={index}>
+              <Grid item xs={12} sm={4} md={4} lg={4} key={index}>
                 <Card
                   sx={{
                     height: '100%',
