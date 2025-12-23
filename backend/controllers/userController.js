@@ -45,18 +45,12 @@ exports.updateUserProfile = async (req, res) => {
     if (req.files.resume) {
       const resumeFile = req.files.resume[0];
       
-      // Cloudinary returns the URL in 'path' or 'secure_url'
-      // For raw files, we need to use the URL Cloudinary provides directly
+      // Use the Cloudinary URL directly without modifications
+      // Cloudinary will serve raw PDFs with the URL as-is
       let resumeUrl = resumeFile.secure_url || resumeFile.path;
       
       // Clean up the URL
       resumeUrl = resumeUrl.replace(/\\/g, "/");
-      
-      // Add inline viewing flag to the URL for PDFs
-      // Convert: .../upload/... to .../upload/fl_attachment/...
-      if (resumeUrl.includes('/upload/')) {
-        resumeUrl = resumeUrl.replace('/upload/', '/upload/fl_attachment/');
-      }
       
       profileFields.resume = resumeUrl;
       
