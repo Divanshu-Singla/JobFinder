@@ -105,7 +105,7 @@ const ContactPage = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        bgcolor: '#f5f5f5',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -113,15 +113,21 @@ const ContactPage = () => {
       }}
     >
       <Container maxWidth="sm">
-        <Paper
-          elevation={8}
+        <Box
           sx={{
-            p: { xs: 4, sm: 6 },
+            p: 0.5,
             borderRadius: 4,
-            bgcolor: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           }}
         >
+          <Paper
+            elevation={0}
+            sx={{
+              p: { xs: 4, sm: 6 },
+              borderRadius: 3.5,
+              bgcolor: 'white',
+            }}
+          >
           <Typography
             variant="h4"
             align="center"
@@ -274,6 +280,7 @@ const ContactPage = () => {
             </Button>
           </form>
         </Paper>
+        </Box>
       </Container>
     </Box>
   );
