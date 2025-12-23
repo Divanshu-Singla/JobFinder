@@ -494,15 +494,7 @@ const UserDashboard = () => {
                         const resumeUrl = user.resume.startsWith('http')
                           ? user.resume
                           : `${process.env.REACT_APP_API_BASE_URL?.replace('/api', '')}/${user.resume}`;
-                        // Create a temporary link to download with proper filename
-                        const link = document.createElement('a');
-                        link.href = resumeUrl;
-                        link.download = `${user.name.replace(/\s+/g, '_')}_resume.pdf`;
-                        link.target = '_blank';
-                        link.rel = 'noopener noreferrer';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                        window.open(resumeUrl, '_blank', 'noopener,noreferrer');
                       }}
                       sx={{ fontSize: '0.8125rem', color: '#667eea', cursor: 'pointer', textAlign: 'left' }}
                     >
