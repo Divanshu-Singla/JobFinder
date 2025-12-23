@@ -41,7 +41,7 @@ const storage = new CloudinaryStorage({
     return {
       folder: folder,
       resource_type: resourceType,
-      format: format,
+      format: isResume ? undefined : format, // Don't set format for PDFs, let Cloudinary preserve it
       allowed_formats: isResume ? ['pdf', 'doc', 'docx'] : ['jpg', 'jpeg', 'png'],
       public_id: `${file.fieldname}-${Date.now()}`,
       transformation: isProfilePhoto ? [

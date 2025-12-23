@@ -42,17 +42,10 @@ exports.updateUserProfile = async (req, res) => {
       profileFields.profilePhoto = req.files.profilePhoto[0].path.replace(/\\/g, "/");
     }
     if (req.files.resume) {
-      // For Cloudinary PDFs, the path might not include extension
-      // Get the original filename extension and append if needed
-      let resumePath = req.files.resume[0].path.replace(/\\/g, "/");
-      const originalExt = req.files.resume[0].originalname.split('.').pop().toLowerCase();
-      
-      // If Cloudinary URL doesn't end with extension, add it
-      if (!resumePath.endsWith(`.${originalExt}`)) {
-        resumePath = `${resumePath}.${originalExt}`;
-      }
-      
-      profileFields.resume = resumePath;
+      // Use the secure_url from Cloudinary which includes proper extension and access
+      const resumeFile = req.files.resume[0];
+      // Cloudinary returns secure_url for raw files with proper extension
+      profileFields.resume = (resumeFile.secure_url || resumeFile.path).replace(/\\/g, "/");
     }
   }
 
