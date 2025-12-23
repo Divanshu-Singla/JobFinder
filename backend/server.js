@@ -115,6 +115,9 @@ app.use('/api/admin', require('./routes/api/admin'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/jobs', require('./routes/api/jobs'));
 
+// Ignore favicon requests to prevent 404 errors in logs
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // 404 handler - must be after all routes
 app.use(notFound);
 
