@@ -491,8 +491,10 @@ const UserDashboard = () => {
                     <Link 
                       component="button"
                       onClick={() => {
-                        const resumeUrl = `${process.env.REACT_APP_API_BASE_URL}/resume/${user._id}`;
-                        window.open(resumeUrl, '_blank', 'noopener,noreferrer');
+                        // Use Google Docs Viewer to display PDF
+                        const pdfUrl = encodeURIComponent(user.resume);
+                        const googleViewerUrl = `https://docs.google.com/gview?url=${pdfUrl}&embedded=true`;
+                        window.open(googleViewerUrl, '_blank', 'noopener,noreferrer');
                       }}
                       sx={{ fontSize: '0.8125rem', color: '#667eea', cursor: 'pointer', textAlign: 'left' }}
                     >
