@@ -136,10 +136,8 @@ const AdminApplicantsPage = () => {
                           size="small"
                           variant="contained"
                           onClick={() => {
-                            // Use Google Docs Viewer to display PDF
-                            const pdfUrl = encodeURIComponent(applicant.resume);
-                            const googleViewerUrl = `https://docs.google.com/gview?url=${pdfUrl}&embedded=true`;
-                            window.open(googleViewerUrl, '_blank', 'noopener,noreferrer');
+                            // Direct Cloudinary URL for testing
+                            window.open(applicant.resume, '_blank', 'noopener,noreferrer');
                           }}
                           sx={{ 
                             textTransform: 'none',
