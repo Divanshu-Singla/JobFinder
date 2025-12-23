@@ -489,9 +489,24 @@ const UserDashboard = () => {
                       Current Resume
                     </Typography>
                     <Link 
-                      href={user.resume}
-                      download
-                      target="_blank"
+                      component="button"
+                      onClick={async () => {
+                        try {
+                          const response = await fetch(user.resume);
+                          const blob = await response.blob();
+                          const url = window.URL.createObjectURL(blob);
+                          const link = document.createElement('a');
+                          link.href = url;
+                          link.download = `${user.name.replace(/\s+/g, '_')}_Resume.pdf`;
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                          window.URL.revokeObjectURL(url);
+                        } catch (error) {
+                          console.error('Download failed:', error);
+                          alert('Failed to download resume');
+                        }
+                      }}
                       sx={{ fontSize: '0.8125rem', color: '#667eea', cursor: 'pointer', textAlign: 'left' }}
                     >
                       Download Resume →

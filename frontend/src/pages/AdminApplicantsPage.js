@@ -135,10 +135,23 @@ const AdminApplicantsPage = () => {
                         <Button
                           size="small"
                           variant="contained"
-                          component="a"
-                          href={applicant.resume}
-                          download
-                          target="_blank"
+                          onClick={async () => {
+                            try {
+                              const response = await fetch(applicant.resume);
+                              const blob = await response.blob();
+                              const url = window.URL.createObjectURL(blob);
+                              const link = document.createElement('a');
+                              link.href = url;
+                              link.download = `${applicant.name.replace(/\s+/g, '_')}_Resume.pdf`;
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                              window.URL.revokeObjectURL(url);
+                            } catch (error) {
+                              console.error('Download failed:', error);
+                              alert('Failed to download resume');
+                            }
+                          }}
                           sx={{ 
                             textTransform: 'none',
                             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
