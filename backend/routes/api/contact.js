@@ -2,9 +2,21 @@
 
 const express = require('express');
 const router = express.Router();
-const { body } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const { sendContactEmail } = require('../../controllers/contactController');
-const { validateRequest } = require('../../middleware/validationMiddleware');
+
+// Validation middleware
+const validate = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ 
+      success: false,
+      message: errors.array()[0].msg,
+      errors: errors.array()
+    });
+  }
+  next();
+};
 
 // Contact form validation rules
 const contactValidation = [
@@ -30,6 +42,6 @@ const contactValidation = [
 // @route   POST /api/contact
 // @desc    Send contact form email
 // @access  Public
-router.post('/', contactValidation, validateRequest, sendContactEmail);
+router.post('/', contactValidation, validate, sendContactEmail);
 
 module.exports = router;
