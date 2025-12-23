@@ -5,6 +5,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import DownloadIcon from '@mui/icons-material/Download';
 
 const PdfViewer = ({ open, onClose, pdfUrl, title = "Resume" }) => {
+  // Convert relative URL to full backend URL
+  const getFullUrl = (url) => {
+    if (!url) return '';
+    if (url.startsWith('http')) return url; // Already full URL
+    
+    // Get backend base URL from environment
+    const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+    const backendBaseUrl = apiBaseUrl.replace('/api', ''); // Remove /api suffix
+    
+    return `${backendBaseUrl}${url}`;
+  };
+
+  const fullPdfUrl = getFullUrl(pdfUrl);
+
   return (
     <Dialog 
       open={open} 
@@ -28,7 +42,7 @@ const PdfViewer = ({ open, onClose, pdfUrl, title = "Resume" }) => {
         <Box sx={{ display: 'flex', gap: 1 }}>
           <IconButton
             component="a"
-            href={pdfUrl}
+            href={fullPdfUrl}
             target="_blank"
             download
             sx={{ color: '#1976d2' }}
@@ -42,7 +56,7 @@ const PdfViewer = ({ open, onClose, pdfUrl, title = "Resume" }) => {
       </DialogTitle>
       <DialogContent sx={{ p: 0, height: 'calc(100% - 64px)' }}>
         <iframe
-          src={pdfUrl}
+          src={fullPdfUrl}
           style={{
             width: '100%',
             height: '100%',
