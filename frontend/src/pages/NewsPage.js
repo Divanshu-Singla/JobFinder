@@ -95,21 +95,23 @@ const styles = {
     overflow: 'hidden',
     transition: 'all 0.3s',
     display: 'flex',
-    flexDirection: 'column',
-    height: '520px',
+    flexDirection: 'row',
+    height: '250px',
   },
   newsImage: {
-    width: '100%',
-    height: '192px',
+    width: '33.333%',
+    height: '100%',
     objectFit: 'cover',
+    flexShrink: 0,
   },
   newsImagePlaceholder: {
-    width: '100%',
-    height: '192px',
+    width: '33.333%',
+    height: '100%',
     background: 'linear-gradient(to bottom right, #60a5fa, #a78bfa)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 0,
   },
   placeholderIcon: {
     fontSize: '60px',
@@ -121,13 +123,15 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
+    width: '66.667%',
+    overflow: 'hidden',
   },
   sourceRow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '12px',
-    fontSize: '14px',
+    marginBottom: '8px',
+    fontSize: '12px',
     color: '#6b7280',
   },
   sourceName: {
@@ -140,38 +144,38 @@ const styles = {
     gap: '4px',
   },
   cardTitle: {
-    fontSize: '18px',
+    fontSize: '16px',
     fontWeight: 'bold',
     color: '#1f2937',
-    marginBottom: '12px',
+    marginBottom: '8px',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     display: '-webkit-box',
     WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
     lineHeight: '1.4',
-    height: '2.8em',
   },
   cardDescription: {
     color: '#6b7280',
-    fontSize: '14px',
-    marginBottom: '16px',
+    fontSize: '13px',
+    marginBottom: '12px',
     flexGrow: 1,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     display: '-webkit-box',
-    WebkitLineClamp: 3,
+    WebkitLineClamp: 2,
     WebkitBoxOrient: 'vertical',
     lineHeight: '1.5',
   },
   readMoreLink: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: '6px',
     color: '#2563eb',
     fontWeight: '600',
     textDecoration: 'none',
     transition: 'color 0.3s',
+    fontSize: '13px',
   },
   noNewsContainer: {
     textAlign: 'center',
@@ -312,22 +316,6 @@ const NewsPage = () => {
                   style={styles.newsCard}
                   className="news-card"
                 >
-                  {/* Image */}
-                  {article.urlToImage ? (
-                    <img
-                      src={article.urlToImage}
-                      alt={article.title}
-                      style={styles.newsImage}
-                      onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/400x200?text=No+Image";
-                      }}
-                    />
-                  ) : (
-                    <div style={styles.newsImagePlaceholder}>
-                      <FaNewspaper style={styles.placeholderIcon} />
-                    </div>
-                  )}
-
                   {/* Content */}
                   <div style={styles.cardContent}>
                     {/* Source & Date */}
@@ -363,6 +351,22 @@ const NewsPage = () => {
                       <FaExternalLinkAlt style={{ fontSize: '12px' }} />
                     </a>
                   </div>
+
+                  {/* Image */}
+                  {article.urlToImage ? (
+                    <img
+                      src={article.urlToImage}
+                      alt={article.title}
+                      style={styles.newsImage}
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/400x200?text=No+Image";
+                      }}
+                    />
+                  ) : (
+                    <div style={styles.newsImagePlaceholder}>
+                      <FaNewspaper style={styles.placeholderIcon} />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
