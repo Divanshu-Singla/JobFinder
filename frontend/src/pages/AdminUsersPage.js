@@ -134,8 +134,15 @@ const AdminUsersPage = () => {
                           onClick={async () => {
                             try {
                               const response = await fetch(user.resume);
+                              if (!response.ok) {
+                                throw new Error('Failed to fetch resume');
+                              }
+                              const contentType = response.headers.get('content-type');
+                              console.log('Resume content-type:', contentType);
                               const blob = await response.blob();
-                              const url = window.URL.createObjectURL(blob);
+                              // Create blob with explicit PDF MIME type
+                              const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+                              const url = window.URL.createObjectURL(pdfBlob);
                               const link = document.createElement('a');
                               link.href = url;
                               link.download = `${user.name.replace(/\s+/g, '_')}_Resume.pdf`;
@@ -145,7 +152,7 @@ const AdminUsersPage = () => {
                               window.URL.revokeObjectURL(url);
                             } catch (error) {
                               console.error('Download failed:', error);
-                              alert('Failed to download resume');
+                              alert('Failed to download resume: ' + error.message);
                             }
                           }}
                           sx={{
