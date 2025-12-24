@@ -96,6 +96,13 @@ exports.deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
+    
+    // Remove user's applications from all jobs
+    await Job.updateMany(
+      { 'applicants.userId': user._id },
+      { $pull: { applicants: { userId: user._id } } }
+    );
+    
     await user.deleteOne();
     res.json({ msg: 'User removed' });
   } catch (err) {
@@ -108,8 +115,18 @@ exports.deleteUser = async (req, res) => {
 
 exports.getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find().sort({ createdAt: -1 });
-    res.json(jobs);
+    const jobs = await Job.find()
+      .populate('applicants.userId', '_id')
+      .sort({ createdAt: -1 });
+    
+    // Filter out applicants with deleted users and return cleaned data
+    const cleanedJobs = jobs.map(job => {
+      const jobObj = job.toObject();
+      jobObj.applicants = jobObj.applicants.filter(app => app.userId != null);
+      return jobObj;
+    });
+    
+    res.json(cleanedJobs);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
