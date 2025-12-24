@@ -14,9 +14,12 @@ exports.getStats = async (req, res) => {
     const totalUsers = await User.countDocuments();
     const totalJobs = await Job.countDocuments();
     
-    // Count total applications across all jobs
-    const jobs = await Job.find();
-    const totalApplications = jobs.reduce((sum, job) => sum + job.applicants.length, 0);
+    // Count total applications across all jobs, excluding deleted users
+    const jobs = await Job.find().populate('applicants.userId', '_id');
+    const totalApplications = jobs.reduce((sum, job) => {
+      const validApplicants = job.applicants.filter(app => app.userId != null);
+      return sum + validApplicants.length;
+    }, 0);
     
     res.json({
       totalAdmins,
